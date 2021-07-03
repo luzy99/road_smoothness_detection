@@ -1,0 +1,81 @@
+<!--pages/home.wxml-->
+<view class="page">
+  <view class="page__hd">
+    <!-- 第一页面 -->
+    <block wx:if="{{index==0}}">
+      <scroll-view class="map-section" scroll-y="true">
+        <!-- 地图组件 scale缩放比例 markers地图上显示的点 polyline 要画的路径点 初始化是人的位置为中心-->
+        <map class="tx_map" id="tx_map" longitude="{{my_longitude}}" latitude="{{my_latitude}}"
+          subkey="{{appdata.mapKey}}" show-location="true" scale="17" markers="{{markers}}" polyline="{{poi}}">
+        </map>
+        <view style="background-color:rgb(245,245,245);margin-top:20rpx">
+          <mp-cell>
+            <view>显示路线</view>
+            <view slot="footer">
+              <switch checked="{{showRoad}}" bindchange="showRoadChange"></switch>
+            </view>
+          </mp-cell>
+          <mp-cell>
+            <view wx:if="{{switchStatus}}">检测中</view>
+            <view wx:else>开启检测</view>
+            <view slot="footer">
+              <switch checked="{{switchStatus}}" bindchange="switchChange"></switch>
+            </view>
+          </mp-cell>
+          <mp-cells wx:if="{{switchStatus}}" ext-class="my-cells" title="传感器数据">
+            <mp-cell>
+              <view slot="title">
+                <view>经度: {{my_longitude}} </view>
+                <view>纬度: {{my_latitude}}</view>
+              </view>
+            </mp-cell>
+            <mp-cell>
+              <view slot="title">
+                <view>x: {{acc_x}}</view>
+                <view>y: {{acc_y}}</view>
+                <view>z: {{acc_z}}</view>
+                <view>ground: {{acc_ground}}</view>
+                <view>alpha: {{alpha}}</view>
+                <view>beta: {{beta}}</view>
+                <view>gamma: {{gamma}}</view>
+              </view>
+            </mp-cell>
+          </mp-cells>
+
+        </view>
+      </scroll-view>
+    </block>
+    <!-- 第二页面 -->
+    <block wx:else>
+      <!-- 用户头像和昵称显示 -->
+      <view class="userinfo">
+        <view class="head_img">
+          <open-data type="userAvatarUrl"></open-data>
+        </view>
+
+        <open-data type="userNickName" class="userinfo-nickname"></open-data>
+      </view>
+      <mp-cell>
+        <image slot="icon" src="/images/history_data.png" style="margin-right: 16px;vertical-align: middle;width:20px; height: 20px;"></image>
+        <view>您已贡献{{userRecordNum}}条数据啦~</view>
+        <view slot="footer">
+          <button class="mini-btn" type="primary" size="mini" bindtap="getRecordNum">刷新</button>
+        </view>
+      </mp-cell>
+      <mp-cell link hover value="关于我们" bindtap="tapBindAboutCell">
+        <image slot="icon" src="/images/about_us.png" style="margin-right: 16px;vertical-align: middle;width:20px; height: 20px;"></image>
+      </mp-cell>
+      <mp-dialog title="关于我们" show="{{bindAboutDialogShow}}" mask="true" bindbuttontap="tapBindAboutDialogButton"
+        buttons="{{oneButton}}">
+        <view>
+          <text>
+            ©SEU网络编程第九组\n
+            lzy, wr, tjh, xzw 
+          </text>
+        </view>
+      </mp-dialog>
+    </block>
+  </view>
+  <mp-tabbar style="position:fixed;bottom:0;width:100%;left:0;right:0;" list="{{list}}" bindchange="tabChange">
+  </mp-tabbar>
+</view>

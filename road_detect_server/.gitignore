@@ -1,0 +1,6 @@
+*__pycache__
+*.__pycache__
+.vscode
+*/migrations/00*_*.py
+.idea
+media/*
